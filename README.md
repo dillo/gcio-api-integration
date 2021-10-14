@@ -7,47 +7,24 @@ Take home Ruby on Rails project.
 
 * **Ask:**
 
-     * _"Prototype a web application for scheduling an appointment"_
+     * _"Prototype a Rails API for integrating with the [Fakestore API](http://fakestoreapi.com/)"_
+     *  _"Given a [Fakestore API](http://fakestoreapi.com/) that contains a list of products, create an integration
+     between the Rails API and the Fakestore's [products](http://fakestoreapi.com/products) JSON endpoint"_
+     * _"Create a Rake `task` that can trigger the Rails API to make a GET request to the Fakestore's `products` endpoint
+     and successfully retrieve a list of products as JSON"_
+     * _"Create appropriate Active Record models(make your own determination on what's needed) and persist the products data that was
+     fetched from the previous step into the Postgresql database"_
+     * _"Create a REST endpoint on the Rails API that can be used to search for products by a given price range and category. The result set
+     should be returned as an array of products and as JSON"_
 
-* **Input:**
+* **Example Rails API search endpoint:**
 
-   *  _"Given a [CSV dataset](./lib/tasks/coaches.csv) that contains the active coaches and their 
-     weekly schedule of their available hours, Output the following
-     User Stories:"_
-         
-* **Output:**
-        
-    * _As a User, I want to see which coaches I can schedule with._
-    
-    * _As a User, I want to see what 30 minute timeslots are available to schedule with a particular coach._
-    
-    * _As a User, I want to book an appointment with a coach at one of their available times._
-               
-* **Anit-Requirements:**
+    * -"http://localhost:3000/products?category=FOO&price=100,200"_
+
+* **Notes:**
 
      * _You can't do it all. We respect your time, and expect that you will have to make 
         choices and tradeoffs for what is in scope for your deliverable._
-     
      * _Don't worry about authentication. Assume a non-authenticated experience to keep things simple._
-     
      * _Pick your stack. Choose any gems that help you produce the highest quality work in the time available._
     
-
-### Local Setup
-
-* `bundle install`
-* `bundle exec rails db:setup`
-
-### Run RSpec's
-
-* `bundle exec rspec`
-
-
-### Run Rubcop
-
-* `bundle exec rubocop`
-
-### Run App Locally
-
-* `bundle exec rails s`
-* `http://localhost:3000/`
