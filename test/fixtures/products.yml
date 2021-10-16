@@ -6,6 +6,8 @@ one:
   category: MyString
   description: MyText
   image: MyString
+  rating_rate: 9.99
+  rating_count: 1
 
 two:
   title: MyString
@@ -13,3 +15,5 @@ two:
   category: MyString
   description: MyText
   image: MyString
+  rating_rate: 9.99
+  rating_count: 1

@@ -3,6 +3,8 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
+    # view request parameters
+    puts YAML::dump(params)
     @products = Product.all
 
     render json: @products
@@ -10,6 +12,8 @@ class ProductsController < ApplicationController
 
   # GET /products/1
   def show
+    # view request parameters
+    puts YAML::dump(params)
     render json: @product
   end
 
