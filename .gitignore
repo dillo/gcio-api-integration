@@ -25,3 +25,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore updates to my AWS config that should not be pushed to github for security reasons
+# review these if setting up post-development deployments
+/config/environments/development.rb
+/config/database.yml
+
