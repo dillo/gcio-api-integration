@@ -1,20 +1,29 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :update, :destroy]
 
+  @@fake_store_param = "fake_store"
+  @@fake_store_products_URI = "https://fakestoreapi.com/products/"
+  
   # GET /products
   def index
-    # view request parameters
-    puts YAML::dump(params)
-    @products = Product.all
-
-    render json: @products
+    if request.parameters.has_key? @@fake_store_param
+      puts "YES " + @@fake_store_param + " products"
+      redirect_to  @@fake_store_products_URI
+    else
+      @products = Product.all
+      render json: @products
+    end
   end
 
   # GET /products/1
   def show
-    # view request parameters
-    puts YAML::dump(params)
-    render json: @product
+    if request.parameters.has_key? @@fake_store_param
+      request_id = request.parameters[:id];
+      puts "YES " + @@fake_store_param + " product #" + request_id
+      redirect_to @@fake_store_products_URI + request_id
+    else
+      render json: @product
+    end
   end
 
   # POST /products
