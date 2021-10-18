@@ -4,6 +4,14 @@ class ProductsController < ApplicationController
   @@fake_store_param = "fake_store"
   @@fake_store_products_URI = "https://fakestoreapi.com/products/"
   
+  def self.get_fake_store_param
+    @@fake_store_param
+  end
+  
+  def self.get_fake_store_products_URI
+    @@fake_store_products_URI
+  end
+  
   # GET /products
   def index
     if request.parameters.has_key? @@fake_store_param
