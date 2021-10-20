@@ -1,4 +1,6 @@
-class ProductsController < ApplicationController
+require 'rest-client'
+
+class ProductsController < ActionController::API
   before_action :set_product, only: [:show, :update, :destroy]
 
   @@fake_store_param = "fake_store"
@@ -15,7 +17,14 @@ class ProductsController < ApplicationController
      # GET /products
   def index
       if request.parameters.has_key? @@fake_store_param
-        redirect_to do_route_to_fake_store request.parameters
+
+        # OK to redirect IF no category or price in the request.parameters
+        # note the changed handling will affect the test code; 
+        # new logic w/rest-client means we get HTTP 204 No Content back
+        # redirect_to route_to_fake_store request.parameters
+
+        fake_store_products = JSON.parse( RestClient.get route_to_fake_store request.parameters )
+        render json: fake_store_products
       else
         @products = Product.all
         render json: @products
@@ -23,19 +32,20 @@ class ProductsController < ApplicationController
     end
     
   # return fake_store URI based on request parameters
-  def do_route_to_fake_store request_params
-        puts "YES " + @@fake_store_param + " products"
-        redirect_url = @@fake_store_products_URI
+  def route_to_fake_store request_params
+        fake_store_url = @@fake_store_products_URI
         # get the category name-value pair
         category_value = ""
         category_URI_append = ""
         if request_params.has_key? "category"
           category_value += request_params[:category]
-          puts "category is " + category_value
+          # some categories are men's clothing, women's clothing
+          category_value = URI.escape category_value
+          puts "URI-encloded category is " + category_value
           category_URI_append += "category/" + category_value
-          redirect_url += category_URI_append
+          fake_store_url += category_URI_append
         end
-          redirect_url
+          fake_store_url
   end
 
   # GET /products/1
