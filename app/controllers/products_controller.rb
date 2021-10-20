@@ -12,15 +12,30 @@ class ProductsController < ApplicationController
     @@fake_store_products_URI
   end
   
-  # GET /products
+     # GET /products
   def index
-    if request.parameters.has_key? @@fake_store_param
-      puts "YES " + @@fake_store_param + " products"
-      redirect_to  @@fake_store_products_URI
-    else
-      @products = Product.all
-      render json: @products
+      if request.parameters.has_key? @@fake_store_param
+        redirect_to do_route_to_fake_store request.parameters
+      else
+        @products = Product.all
+        render json: @products
+      end
     end
+    
+  # return fake_store URI based on request parameters
+  def do_route_to_fake_store request_params
+        puts "YES " + @@fake_store_param + " products"
+        redirect_url = @@fake_store_products_URI
+        # get the category name-value pair
+        category_value = ""
+        category_URI_append = ""
+        if request_params.has_key? "category"
+          category_value += request_params[:category]
+          puts "category is " + category_value
+          category_URI_append += "category/" + category_value
+          redirect_url += category_URI_append
+        end
+          redirect_url
   end
 
   # GET /products/1
