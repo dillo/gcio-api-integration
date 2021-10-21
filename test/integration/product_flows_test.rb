@@ -8,7 +8,9 @@ class ProductFlowsTest < ActionDispatch::IntegrationTest
     
       assert_equal "index", @controller.action_name
       
-      assert_equal 302, status
-      assert_equal @response.get_header("location"), ProductsController::get_fake_store_products_URI
+      assert_equal 200, status
+
+      # correct IF doing a redirect, but not after rest-client handling
+      # assert_equal @response.get_header("location"), ProductsController::get_fake_store_products_URI
     end
 end # end class

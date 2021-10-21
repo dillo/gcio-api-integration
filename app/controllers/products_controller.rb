@@ -28,7 +28,6 @@ class ProductsController < ActionController::API
       # OK to redirect IF no category or price in the request.parameters
       # note the changed handling will affect the test code; 
       # new logic w/rest-client means we get HTTP 204 No Content back
-      # redirect_to route_to_fake_store request.parameters
 
       fake_store_products = JSON.parse( RestClient.get route_to_fake_store request.parameters )
 
@@ -65,10 +64,7 @@ class ProductsController < ActionController::API
 
   # input is json from fakestoreapi products, price range string
   # already filtered by category
-  # return altered json
   def  filter_on_price_range product_json, price_range
-      puts "the price range is " + price_range
-
      # TO DO: Require the range to be lowest, highest, 
      # OR add logic to accept highest, lowest
 
@@ -77,52 +73,25 @@ class ProductsController < ActionController::API
       lowest_price = range[0].to_f 
       highest_price = range[1].to_f
 
-      # remove JSON product objects not in price range, inclusive
-      # HOW could 999.99 price slip thru when price_range was 100,245.99
-      # also - WHY is the FINAL electroncs item NOT deleted here??
-      # an artifact of recount of array once other items removed  IS LIKELY
-      #
-      # so loop to FLAG an item for deletion BY INDEX;
-      # then delete per index
+      return_json = []
 
-      deletion_indices = Array.new(product_json.count)
-      # index of a deleted product
-      del_i = 0
-      # index of a product
-      item_i = 0
-
+      # diagnostic console prints for convenience
       product_json.each { |product| 
 
         the_price = product["price"].to_f
         puts "THE PRICE: " + the_price.to_s
 
-        if the_price > highest_price
-          puts "TOO HIGH"
-        end
-
         if the_price < lowest_price
           puts "TOO LOW"
-        end
-
-        if the_price < lowest_price
-          deletion_indices[del_i] = item_i
-          del_i += 1
         elsif the_price > highest_price
-          deletion_indices[del_i] = item_i
-          del_i += 1         
+          puts "TOO HIGH" 
+        else
+          puts "IN RANGE"
+          return_json.push product 
         end
-
-        item_i += 1
       }
 
-      j = 0
-      while deletion_indices[j] != NIL
-        product_json.delete product_json[j]
-        j += 1
-      end
-      # product_json.delete product
-
-      product_json
+      return_json
   end
 
   # GET /products/1
