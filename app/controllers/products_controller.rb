@@ -25,10 +25,6 @@ class ProductsController < ActionController::API
   def index
     if request.parameters.has_key? @@fake_store_param
 
-      # OK to redirect IF no category or price in the request.parameters
-      # note the changed handling will affect the test code; 
-      # new logic w/rest-client means we get HTTP 204 No Content back
-
       fake_store_products = JSON.parse( RestClient.get route_to_fake_store request.parameters )
 
       # if we filter by price, we must also be passing a category per requirements
@@ -37,6 +33,21 @@ class ProductsController < ActionController::API
         price_value = request.parameters[:price]
         fake_store_products =  filter_on_price_range fake_store_products, price_value
       end
+
+      # if request.parameters.has_key? "save"
+      #     # persist to database
+      #     fake_store_products.each { |product| 
+      #        # forward to create below PER product
+      #        # once the FakeStoreAPI JSON
+      #        # is morphed into default Rails JSON.
+      #        #
+      #        # Likely main problem is that rating fields in 
+      #        #  the fakestore API are a sub-object, while
+      #        # the for the default Rails JSON they are not.
+      #        # 
+
+      #     }
+      # end
 
       render json: fake_store_products
     else
